@@ -44,4 +44,10 @@ dependencies {
     implementation files('libs/TingPhoneOpenSDK_7.5.11.jar')
     /*magic indicator*/
     implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
+
+    implementation 'com.android.support:recyclerview-v7:+'
+
+    /*glide*/
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
 }

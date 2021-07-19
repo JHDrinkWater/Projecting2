@@ -9,4 +9,7 @@ public class Constants {
 
     //页数
     public static final int PAGE_COUNT = 3;
+
+    //显示的推荐列表的数量
+    public static final int RECOMMEND_COUNT = 50;
 }
