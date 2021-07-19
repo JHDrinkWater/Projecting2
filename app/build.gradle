@@ -42,4 +42,6 @@ dependencies {
     implementation files('libs/XmlyOAuth2SDK_V2.0.jar')
     implementation files('libs/XmDownload_2.0.jar')
     implementation files('libs/TingPhoneOpenSDK_7.5.11.jar')
+    /*magic indicator*/
+    implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
 }
