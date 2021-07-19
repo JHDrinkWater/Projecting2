@@ -16,24 +16,30 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:+'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation('com.squareup.okio:okio:2.6.0')
-    implementation('com.squareup.okhttp3:okhttp:4.6.0')
-    implementation('com.google.code.gson:gson:2.8.6')
-
+    implementation 'com.squareup.okio:okio:2.6.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.6.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
     /*ButterKnife*/
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-
     /*GreenDao*/
     implementation 'org.greenrobot:greendao:3.0.1'
     implementation 'org.greenrobot:greendao-generator:3.0.0'
+    implementation files('libs/XmlyOAuth2SDK_V2.0.jar')
+    implementation files('libs/XmDownload_2.0.jar')
+    implementation files('libs/TingPhoneOpenSDK_7.5.11.jar')
 }
