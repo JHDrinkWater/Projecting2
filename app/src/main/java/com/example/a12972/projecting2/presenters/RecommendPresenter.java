@@ -22,7 +22,7 @@ public class RecommendPresenter implements IRecommendPresenter {
 
     private static final String TAG = "RecommendPresenter";
 
-    private HashMap<String, IRecommendViewCallBack> mCallBacks = new HashMap<>();
+    private List<IRecommendViewCallBack> mCallBacks = new ArrayList<>();
 
     private RecommendPresenter() {
     }
@@ -44,7 +44,9 @@ public class RecommendPresenter implements IRecommendPresenter {
 
     @Override
     // TODO: 2021/7/19 获取推荐内容 调用喜马拉雅接口
-    public void getRecommendList(final String key) {
+    public void getRecommendList() {
+        //设置为加载中
+        uploading();
         //封装参数
         Map<String, String> map = new HashMap<String, String>();
         //参数代表一次返回多少条
@@ -57,7 +59,7 @@ public class RecommendPresenter implements IRecommendPresenter {
                 //获取成功
                 if (gussLikeAlbumList != null) {
                     List<Album> albumList = gussLikeAlbumList.getAlbumList();
-                    handlerRecommendResult(key,albumList);
+                    handlerRecommendResult(albumList);
                     return;
                 }
                 LogUtil.d(TAG, "error albumList!");
@@ -67,39 +69,57 @@ public class RecommendPresenter implements IRecommendPresenter {
             public void onError(int code, String message) {
                 //获取失败
                 LogUtil.d(TAG, "error code is: ---> " + code + " error message is ---> " + message);
+                handlerError();
             }
         });
     }
 
-    @Override
-    public void pull2RefreshMore() {
-
-    }
-
-    @Override
-    public void loadMore() {
-
-    }
-
-    @Override
-    public void registViewCallBack(String key, IRecommendViewCallBack callBack) {
-        if (!mCallBacks.containsKey(callBack)) {
-            mCallBacks.put(key, callBack);
+    private void uploading() {
+        if (mCallBacks != null) {
+            for (IRecommendViewCallBack callBack : mCallBacks) {
+                callBack.onLoading();
+            }
         }
     }
 
-    @Override
-    public void unRegistViewCallBack(String key) {
-        if (!mCallBacks.containsKey(key)) {
-            mCallBacks.remove(key);
+    private void handlerError() {
+        if (mCallBacks != null) {
+            for (IRecommendViewCallBack callBack : mCallBacks) {
+                callBack.onNetworkError();
+            }
         }
     }
 
 
-    private void handlerRecommendResult(String key, List<Album> albumList) {
+    @Override
+    public void registViewCallBack(IRecommendViewCallBack callBack) {
+        if (!mCallBacks.contains(callBack)) {
+            mCallBacks.add(callBack);
+        }
+    }
+
+    @Override
+    public void unRegistViewCallBack(IRecommendViewCallBack callBack) {
+        if (!mCallBacks.contains(callBack)) {
+            mCallBacks.remove(callBack);
+        }
+    }
+
+
+    private void handlerRecommendResult(List<Album> albumList) {
         //通知UI更新
-        if (mCallBacks != null && mCallBacks.containsKey(key)) {
-            mCallBacks.get(key).onRecommendListLoad(albumList);
+        if (albumList != null) {
+            if (albumList.size() == 0) {
+                for (IRecommendViewCallBack callBack : mCallBacks) {
+                    callBack.onEmpty();
+                }
+            } else {
+                if (mCallBacks != null) {
+                    for (IRecommendViewCallBack callBack : mCallBacks) {
+                        callBack.onRecommendListLoad(albumList);
+                    }
+                }
+            }
         }
     }
 

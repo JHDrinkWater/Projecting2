@@ -2,6 +2,8 @@ package com.example.a12972.projecting2.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.example.a12972.projecting2.utils.LogUtil;
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants;
@@ -9,10 +11,12 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest;
 import com.ximalaya.ting.android.opensdk.datatrasfer.DeviceInfoProviderDefault;
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDeviceInfoProvider;
 
+
 public class BaseApplication extends Application {
 
     public static final String REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?";
     private static final String KEY_LAST_OAID = "last_oaid";
+    private static Handler sHandler = null;
 
     private String oaid;
 
@@ -34,6 +38,11 @@ public class BaseApplication extends Application {
 
         // TODO: 2021/7/19 初始化LogUtils
         LogUtil.init(this.getPackageName(), false);
+        sHandler = new Handler(Looper.myLooper());
+    }
+
+    public static Handler getHandler(){
+        return sHandler;
     }
 
     public IDeviceInfoProvider getDeviceInfoProvider(Context context) {
